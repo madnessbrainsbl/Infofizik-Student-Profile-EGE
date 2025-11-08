@@ -1,10 +1,18 @@
-# Infofizik Student Profile #
+# Infofizik Student Profile
 
-TODO Describe the plugin shortly here.
+Moodle plugin for tracking student progress in EGE physics preparation with Telegram bot integration
 
-TODO Provide more detailed description here.
+## Features
 
-## Installing via uploaded ZIP file ##
+- Detailed student statistics and progress tracking
+- Homework tracking with weekly deadlines
+- Grade conversion to EGE primary and secondary scores
+- Self-study and exam week management
+- Student rating system based on solved problems
+- Telegram bot integration for automated notifications
+- Weekly progress reports and debt tracking
+
+## Installing via uploaded ZIP file
 
 1. Log in to your Moodle site as an admin and go to _Site administration >
    Plugins > Install plugins_.
@@ -12,7 +20,7 @@ TODO Provide more detailed description here.
    extra details if your plugin type is not automatically detected.
 3. Check the plugin validation report and finish the installation.
 
-## Installing manually ##
+## Installing manually
 
 The plugin can be also installed by putting the contents of this directory to
 
@@ -27,7 +35,7 @@ Alternatively, you can run
 
 to complete the installation from the command line.
 
-## License ##
+## License
 
 2024 Vlad Pereskokov <it-vpereskokov@mail.ru>
 
