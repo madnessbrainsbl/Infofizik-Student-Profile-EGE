@@ -1,0 +1,156 @@
+   <?php
+
+
+/*    
+    
+
+    foreach ($userCourses as $course) {
+        
+
+        $sectionsDb = $DB->get_records('course_sections', ['course' => $course->id]);
+        $sectionsMap = [];
+        foreach ($sectionsDb as $s) {
+            $sectionsMap[$s->id] = $s;
+        }
+        unset($sectionsDb);
+
+        $modulesDb = $DB->get_records('course_modules', ['course' => $course->id]);
+        $modulesMap = [];
+        foreach ($modulesDb as $m) {
+            $key = $m->module . '/' . $m->instance;
+            $modulesMap[$key] = $m;
+        }
+        unset($modulesDb);
+
+        // attempts
+
+        $courseQuizes = $DB->get_records_sql('
+SELECT
+    mqa.*, mq.name as quiz_name, mqg.grade
+FROM
+    {quiz_attempts} mqa 
+LEFT JOIN
+    {quiz} mq on mq.id = mqa.quiz 
+LEFT JOIN
+    {quiz_grades} mqg on mqa.quiz = mqg.quiz
+WHERE
+    mqa.quiz IN (SELECT id FROM {quiz} mq2 where course = :course)
+', ['course' => $course->id]
+        );
+
+        $attemptedQuizes = [];
+        if (count($courseQuizes) > 0) {
+            foreach ($courseQuizes as $q) {
+                $attemptedQuizes[] = $q->quiz;
+            }
+        }
+
+        // planned courses
+
+        $whereParams = [
+            'course' => $course->id,
+            'now' => time(),
+            'week_end' => strtotime('this sunday 23:59:59'),
+        ];
+
+        $whereClause = 'course = :course AND timeclose > :now AND timeclose < :week_end';
+        if (count($attemptedQuizes) > 0) {
+            $whereClause .= ' AND id NOT IN (:attempted_quizes)';
+            $whereParams['attempted_quizes'] = implode(', ', $attemptedQuizes);
+        }
+        $plannedQuizesThisWeek = $DB->get_records_sql('SELECT * FROM {quiz} WHERE ' . $whereClause, $whereParams);
+
+        echo '<h3>Запланированные тесты до конца недели</h3>';
+
+        if ($plannedQuizesThisWeek !== false && count($plannedQuizesThisWeek) > 0) {
+
+            echo '<table class="flexible table table-striped table-hover generaltable generalbox">';
+
+                echo '<thead>';
+                echo '<tr>
+<th>id</th>
+<th>Тема</th>
+<th>Тест</th>
+<th>Дата закрытия</th>
+</tr>';
+
+            echo '</thead>';
+            echo '<tbody>';
+
+            foreach ($plannedQuizesThisWeek as $planQ) {
+                $section = get_quiz_section($planQ->id, $modulesMap, $sectionsMap);
+                $sectionName = '';
+                if ($section) {
+                    $sectionName = $section->name;
+                }
+
+                if (strlen($sectionName) === 0) {
+                    $sectionName = 'Тема';
+                }
+                
+                echo '<tr>';
+                echo '<td>' . $planQ->id . '</td>';
+                echo '<td>' . $sectionName . '</td>';
+                echo '<td>' . $planQ->name . '</td>';
+                echo '<td>' . format_stamp($planQ->timeclose) . '</td>';
+                echo '</tr>';
+            }
+            echo '</tbody>';
+            echo '</table>';
+            
+        } else {
+            echo '<p>На эту неделю больше тестов нет</p>';
+        }
+        
+
+        if (count($courseQuizes) > 0) {
+            echo '<h3>Попытки</h3>';
+
+            echo '<table class="flexible table table-striped table-hover generaltable generalbox">';
+
+            echo '<thead>';
+            echo '<tr>
+<th>id</th>
+<th>Имя</th>
+<th>Фамилия</th>
+<th>Начало попытки</th>
+<th>Длительность</th>
+<th>Количество решенных задач</th>
+<th>Оценка</th>
+<th>Попытка</th>
+<th>Название теста</th>
+</tr>';
+            echo '</thead>';
+
+            echo '<tbody>';
+            foreach ($courseQuizes as $couseQuizAttempt) {
+                $quizStat = quiz_attempt_correct_answer_stat($couseQuizAttempt->id);
+
+                echo '<tr>';
+
+                echo '<td>' . $couseQuizAttempt->id . '</td>';
+                echo '<td>' . $foundUser->firstname . '</td>';
+                echo '<td>' . $foundUser->lastname . '</td>';
+                echo '<td>' . format_stamp($couseQuizAttempt->timestart) . '</td>';
+                echo '<td>' . format_interval_seconds_to_human($couseQuizAttempt->timefinish - $couseQuizAttempt->timestart) . '</td>';
+                echo '<td>' . $quizStat['total'] . '</td>';
+                echo '<td>' . $couseQuizAttempt->grade . '</td>';
+                echo '<td>' . $couseQuizAttempt->attempt . '</td>';
+                echo '<td>' . $couseQuizAttempt->quiz_name . '</td>';
+
+                echo '</tr>';
+                
+            }
+            echo '<tbody>';
+
+            echo '</table>';
+        }
+    }
+
+    */
+
+
+
+$dateformat = get_string('strftimedateshort');
+            $weekday = userdate($dates->start, $dateformat);
+            $endweekday = userdate($dates->end, $dateformat);
